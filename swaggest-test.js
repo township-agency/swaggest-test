@@ -63,7 +63,10 @@ function parseTest(host, uri, method, methodParams, test) {
   var template = templates(uri)
     , fullUri = template.fill(parameters.path);
 
-  var status = parseInt(test.response.status) || 200;
+  if (test.response && Object.keys(test.response).length === 1) {
+    var status = parseInt(Object.keys(test.response)[0]) || 200;
+  }
+  else var status = 200;
 
   var request = {};
   request.path = parameters.path;
