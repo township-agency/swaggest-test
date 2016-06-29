@@ -1,0 +1,30 @@
+{
+  "name": "swaggest-test",
+  "version": "0.0.4",
+  "description": "better swagger tests",
+  "main": "swaggest-test.js",
+  "dependencies": {
+    "uri-templates": "^0.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MotelIs/swaggest-test.git"
+  },
+  "keywords": [
+    "swagger",
+    "REST",
+    "test",
+    "tests",
+    "swagger-test"
+  ],
+  "author": "Will Drach",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MotelIs/swaggest-test/issues"
+  },
+  "homepage": "https://github.com/MotelIs/swaggest-test#readme"
+}
