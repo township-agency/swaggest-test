@@ -4,6 +4,10 @@ var templates = require('uri-templates');
 
 var exports = module.exports = {};
 
+function isEmpty(obj) {
+  return (Object.keys(obj).length === 0 && obj.constructor === Object);
+};
+
 function expandParameters(methodParams) {
   var params = {};
 
@@ -17,13 +21,13 @@ function expandParameters(methodParams) {
 };
 
 function parseParameters(testParams, methodParams) {
+  if(!testParams || !methodParams) return {path: null, query: null, body: null};
   var ret = {
     path: {},
     query: {},
     body: {},
     invalid: {}
   };
-  if(!testParams || !methodParams) return ret;
   var methodParams = expandParameters(methodParams);
 
   for (var key in testParams) {
@@ -50,8 +54,8 @@ function parseParameters(testParams, methodParams) {
     else ret.invalid[key] = testParams[key];
   }
 
-  if (!Object.keys(ret.body).length) ret.body = null;
-  if (!Object.keys(ret.query).length) ret.query = null;
+  if (isEmpty(ret.body)) ret.body = null;
+  if (isEmpty(ret.query)) ret.query = null;
 
   return ret;
 };
@@ -72,6 +76,15 @@ function parseTest(host, uri, method, methodParams, test) {
   request.path = parameters.path;
   request.query = parameters.query;
   request.body = parameters.body
+  request.headers = test.headers;
+
+  if (request.body) {
+    if (!request.headers) request.headers = {};
+    if (!request.headers['content-type']) {
+      request.headers['content-type'] = 'application/json';
+    }
+  }
+
 
   request.method = method;
   request.uri = 'http://' + host + fullUri;
