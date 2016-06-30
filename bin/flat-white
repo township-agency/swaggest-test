@@ -2,7 +2,7 @@
 
 var fs = require('fs')
   , path = require('path')
-  , request = require('request');
+  , preq = require('preq');
 
 var swaggestTest = require(__dirname + '/../lib/swaggest-test');
 var usageStr = "USAGE: flat-white [swagger.json]";
@@ -20,13 +20,16 @@ function main() {
 				describe(describeStr, function () {
 					tests[route][method].forEach(function (test) {
 						it(test.description, function () {
-							return request[test.request.method]({
+							return preq[test.request.method]({
 								uri: test.request.uri,
 								query: test.request.query,
 								body: test.request.body,
-								headers: test.request.headers}, function (err, response) {
-									swaggestTest.assert(test.response, response);
-								});
+								headers: test.request.headers})
+							.then(function (response) {
+								swaggestTest.assert(test.response, response);
+							}, function (response) {
+								swaggestTest.assert(test.response, response);
+							});
 						});
 					});
 				});

@@ -46,14 +46,17 @@ var tests = swaggestTest.parse(spec);
 
 The resulting 'tests' will be an Object with keys for each route. Each route then also has keys for each method. Inside each method is a list containing the tests. These tests can be run as follows:
 ```javascript
-var request = require('request');
+var preq = require('preq');
 it(test.description, function() {
-  return request[test.request.method]({
+  return preq[test.request.method]({
       uri: test.request.uri,
       query: test.request.query,
       headers: test.request.headers,
       body: test.request.body
-    }, function(err, response) {
+    })
+    .then(function (response) {
+      swaggestTest.assert(test.response, response);
+    }, function (response) {
       swaggestTest.assert(test.response, response);
     });
 });
@@ -62,7 +65,7 @@ it(test.description, function() {
 All together, we recommend running something like this in a tests.json:
 ```javascript
 var fs = require('fs')
-  , request = require('request');
+  , preq = require('preq');
 var swaggerTest = require('../lib/swaggest-test');
 
 describe('test api calls', function () {
@@ -79,7 +82,10 @@ describe('test api calls', function () {
               uri: test.request.uri,
               query: test.request.query,
               body: test.request.body,
-              headers: test.request.headers}, function (err, result) {
+              headers: test.request.headers})
+              .then(function (response) {
+                swaggestTest.assert(test.response, response);
+              }, function (response) {
                 swaggestTest.assert(test.response, response);
               });
           });
@@ -89,5 +95,7 @@ describe('test api calls', function () {
   }
 });
 ```
+
+In fact, that's exactly how our command line tool `flat-white` does it. If you want to just run the tests and don't care about building them yourself, simply run `bin/flat-white swagger.json` and it'll do all of the work for you.
 
 WOOHOO! Automated tests generated using the swagger spec. Go you!
