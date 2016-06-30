@@ -4,7 +4,7 @@ var fs = require('fs');
 var swaggestTest = require('../lib/swaggest-test');
 var assert = require('chai').assert;
 
-describe('test generation with inference', function () {
+describe('test generation', function () {
 
   var testDir = __dirname;
   var buffer  = fs.readFileSync(testDir + '/swagger.json');
@@ -12,12 +12,12 @@ describe('test generation with inference', function () {
 
   var tests = swaggestTest.parse(spec);
 
-  it('has 5 test cases', function () {
-    assert.equal(tests.length, 5);
+  it('has 2 routes', function () {
+    assert.equal(Object.keys(tests).length, 2);
   });
 
   it('test GET w/ query params on dogs/cats', function () {
-     assert.deepEqual(tests[0], {
+     assert.deepEqual(tests['/pets'].get[0], {
        description: 'Return 50 dogs/cats',
        request: {
          path: {},
@@ -38,7 +38,7 @@ describe('test generation with inference', function () {
   });
 
   it('test GET w/ no params', function() {
-    assert.deepEqual(tests[1], {
+    assert.deepEqual(tests['/pets'].get[1], {
 			description: 'Return E V E R Y T H I N G',
 			request: {
 				path: null,
@@ -53,7 +53,7 @@ describe('test generation with inference', function () {
   });
 
   it('test POST', function() {
-    assert.deepEqual(tests[2],   {
+    assert.deepEqual(tests['/pets'].post[0], {
 			description: 'Add a new pet',
 			request: {
 				path: {},
@@ -72,7 +72,7 @@ describe('test generation with inference', function () {
   });
 
   it('test another GET with a uri param', function() {
-		assert.deepEqual(tests[3], {
+		assert.deepEqual(tests['/pets/{id}'].get[0], {
 			description: 'Return a pet',
 			request: {
 				path: {
@@ -89,7 +89,7 @@ describe('test generation with inference', function () {
   });
 
   it('test DELETE', function() {
-    assert.deepEqual(tests[4],   {
+    assert.deepEqual(tests['/pets/{id}']['delete'][0], {
 			description: 'Delete a pet',
 			request: {
 				path: {
