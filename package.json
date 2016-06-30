@@ -1,12 +1,10 @@
 {
   "name": "swaggest-test",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "better swagger tests",
   "main": "swaggest-test.js",
   "dependencies": {
-    "uri-templates": "^0.2.0"
-  },
-  "devDependencies": {
+    "uri-templates": "^0.2.0",
     "chai": "^3.5.0"
   },
   "scripts": {
