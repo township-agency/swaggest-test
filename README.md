@@ -2,9 +2,7 @@
 Here at [Motel](http://motel.is) we are starting to use Swagger more to properly build out and document our APIs. Once we found [swagger-test](https://github.com/earldouglas/swagger-test), we fell in love. However, our intense lust soon died out to the reality of a very small library with no updates and very little support. We tried to make our own [improvements](https://github.com/MotelIs/swagger-test), but the API/parsing of swagger-test didn't cut it. For this reason, we decided that if it was going to be done right, we had to do it ourselves.
 
 ## Setup
-We aren't on NPM yet, so you'll have to clone this repo `git clone https://github.com/MotelIs/swaggest-test.git`
-
-Once you do that, you can copy `lib/swaggest-test.js` and include it in whatever project you're working on. Make sure to install the dependencies though, which as of right now includes `chai` and `uri-templates`.
+`npm install swaggest-test`
 
 ## How To
 Setting up tests with a swagger spec has never been easier! Once you have a route and method defined in swagger, simply add an `x-test` section after your parameters & responses, for example:
