@@ -25,6 +25,8 @@ The `x-test` section should look something like this:
   x-test:
     - description: Return 50 dogs/cats
       request:
+        headers:
+          content-type: application/json
         parameters:
           tags:
             - dogs
