@@ -50,12 +50,7 @@ The resulting 'tests' will be an Object with keys for each route. Each route the
 ```javascript
 var preq = require('preq');
 it(test.description, function() {
-  return preq[test.request.method]({
-      uri: test.request.uri,
-      query: test.request.query,
-      headers: test.request.headers,
-      body: test.request.body
-    })
+  return preq(test.request)
     .then(function (response) {
       swaggestTest.assert(test.response, response);
     }, function (response) {
@@ -63,6 +58,8 @@ it(test.description, function() {
     });
 });
 ```
+
+We highly recommend that you use our assert function rather than writing your own. This ensures future changes to the response object are always updated in the assert function.
 
 All together, we recommend running something like this in a tests.json:
 ```javascript
@@ -80,11 +77,7 @@ describe('test api calls', function () {
       describe(describeStr, function () {
         tests[route][method].forEach(function (test) {
           it(test.description, function () {
-            return request[test.request.method]({
-              uri: test.request.uri,
-              query: test.request.query,
-              body: test.request.body,
-              headers: test.request.headers})
+            return request(test.request)
               .then(function (response) {
                 swaggestTest.assert(test.response, response);
               }, function (response) {
