@@ -2,7 +2,7 @@
   "name": "swaggest-test",
   "version": "0.0.8",
   "description": "better swagger tests",
-  "main": "swaggest-test.js",
+  "main": "lib/swaggest-test.js",
   "dependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
