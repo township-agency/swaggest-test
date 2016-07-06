@@ -249,6 +249,13 @@
                         "required": true,
                         "type": "integer",
                         "format": "int64"
+                    },
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token for the API call",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -264,7 +271,8 @@
                                 "content-type": "application/json"
                             },
                             "parameters": {
-                                "id": 101
+                                "id": 101,
+                                "token": "$token"
                             }
                         },
                         "response": {
