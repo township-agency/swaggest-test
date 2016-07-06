@@ -92,3 +92,6 @@ describe('test api calls', function () {
 In fact, that's exactly how our command line tool `flat-white` does it. If you want to just run the tests and don't care about building them yourself, simply run `bin/flat-white swagger.json` and it'll do all of the work for you.
 
 WOOHOO! Automated tests generated using the swagger spec. Go you!
+
+## References
+This library was originally based off of [swagger-test](https://github.com/earldouglas/swagger-test), but has been changed almost entirely.
