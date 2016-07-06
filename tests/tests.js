@@ -9,7 +9,7 @@ describe('test generation', function () {
   var buffer  = fs.readFileSync(testDir + '/swagger.json');
   var spec    = JSON.parse(buffer);
 
-  var tests = swaggestTest.parse(spec);
+  var tests = swaggestTest.parse(spec, {token: 'himom'});
 
   it('has 3 routes', function () {
     assert.equal(Object.keys(tests).length, 3);
@@ -123,6 +123,7 @@ describe('test generation', function () {
         body: null,
         headers: {
           id: 101,
+          token: 'himom',
           'content-type': 'application/json'
         },
         method: "get",

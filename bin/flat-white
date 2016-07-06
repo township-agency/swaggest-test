@@ -4,15 +4,27 @@ var fs = require('fs')
   , path = require('path')
   , preq = require('preq');
 
-var swaggestTest = require(__dirname + '/../lib/swaggest-test');
+var assert = require('chai').assert;
+
+require('dotenv').config();
+
+var swaggestTest = require(path.join(__dirname, '/../lib/swaggest-test'));
 var usageStr = "USAGE: flat-white [swagger.json]";
 
+function fail() {
+  describe('fail', function() {
+    it(usageStr, function() {
+      assert.equal(process.argv.length, 4);
+    });
+  });
+};
+
 function main() {
-  if (process.argv.length !== 4) return console.log(usageStr);
+  if (process.argv.length !== 4) return fail();
   var swaggerFile = path.normalize(process.argv[3]);
   describe('testing your swagger api using ' + swaggerFile, function () {
     var spec = JSON.parse(fs.readFileSync(swaggerFile));
-    var tests = swaggestTest.parse(spec);
+    var tests = swaggestTest.parse(spec, process.env);
 
     for (var route in tests) {
       for (var method in tests[route]) {
