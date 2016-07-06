@@ -1,6 +1,6 @@
 {
   "name": "swaggest-test",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "description": "better swagger tests",
   "main": "lib/swaggest-test.js",
   "dependencies": {
