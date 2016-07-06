@@ -13,6 +13,9 @@
   "scripts": {
     "test": "mocha ./tests/tests.js"
   },
+  "bin": {
+    "flat-white": "bin/flat-white"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MotelIs/swaggest-test.git"
