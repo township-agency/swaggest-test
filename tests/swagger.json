@@ -237,6 +237,42 @@
                     }
                 ]
             }
+        },
+        "/pets/feed": {
+            "get": {
+                "description": "feed a pet!",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "ID of the pet to feed",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "pet fed"
+                    }
+                },
+                "x-test": [
+                    {
+                        "description": "Feed a pet",
+                        "request": {
+                            "headers": {
+                                "content-type": "application/json"
+                            },
+                            "parameters": {
+                                "id": 101
+                            }
+                        },
+                        "response": {
+                            "200": null
+                        }
+                    }
+                ]
+            }
         }
     },
     "definitions": {
