@@ -25,6 +25,8 @@
     "REST",
     "test",
     "tests",
+    "testing",
+    "swaggest-test",
     "swagger-test"
   ],
   "author": "Will Drach",
