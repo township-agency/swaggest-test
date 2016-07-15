@@ -113,12 +113,7 @@
                         "description": "Pet to add to the store",
                         "required": true,
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/addPet"
                         }
                     }
                 ],
@@ -243,12 +238,7 @@
                 "description": "feed a pet!",
                 "parameters": [
                     {
-                        "name": "id",
-                        "in": "header",
-                        "description": "ID of the pet to feed",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
+                        "$ref": "#/parameters/headerId"
                     },
                     {
                         "name": "token",
@@ -303,6 +293,17 @@
                 }
             }
         },
+        "addPet": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "errorModel": {
             "type": "object",
             "required": [
@@ -318,6 +319,16 @@
                     "type": "string"
                 }
             }
+        }
+    },
+    "parameters": {
+        "headerId": {
+            "name": "id",
+            "in": "header",
+            "description": "ID of the pet to feed",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
         }
     }
 }
