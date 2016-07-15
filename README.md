@@ -37,6 +37,8 @@ The `x-test` section should look something like this:
 
 Note that parameters are simply given a value, the type (body, query, path) is grabbed from the API specification, so you don't have to worry about specifying that. At the moment, swaggest-test only has the ability to check the response code of the response, but will very soon be able to build more complete checks for responses. The description is a description that you will be able to access when it comes time to run your test, so it's good to know what's going on.
 
+Using `$ref` in parameters e.g. `- $ref: '#/parameters/test'` is allowed, as well as using `$ref` in the body schema, like `schema: $ref: '#/parameters/test'`.
+
 Also important to note that parameters that have a value starting with '$' are variables. You can pass these to swaggest-test and they will get filled in before the tests are generated.
 
 Once your swagger file is setup, export it into .json and you can use it for the tool and the library!
