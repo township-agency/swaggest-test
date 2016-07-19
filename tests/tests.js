@@ -30,7 +30,7 @@ describe('test generation', function () {
          headers: undefined,
          body: null,
          method: 'get',
-         uri: 'http://petstore.swagger.io/pets'
+         uri: 'http://petstore.swagger.io/api/pets'
        },
        response: {
          status: 200
@@ -47,7 +47,7 @@ describe('test generation', function () {
         body: null,
         headers: undefined,
         method: 'get',
-        uri: 'http://petstore.swagger.io/pets'
+        uri: 'http://petstore.swagger.io/api/pets'
       },
       response: {
         status: 200
@@ -68,7 +68,7 @@ describe('test generation', function () {
           'content-type': 'application/json'
         },
         method: 'post',
-        uri: 'http://petstore.swagger.io/pets'
+        uri: 'http://petstore.swagger.io/api/pets'
       },
       response: {
         status: 200
@@ -87,7 +87,7 @@ describe('test generation', function () {
         query: null,
         body: null,
         method: 'get',
-        uri: 'http://petstore.swagger.io/pets/101'
+        uri: 'http://petstore.swagger.io/api/pets/101'
       },
       response: {
         status: 200
@@ -106,7 +106,7 @@ describe('test generation', function () {
         query: null,
         body: null,
         method: 'delete',
-        uri: 'http://petstore.swagger.io/pets/101'
+        uri: 'http://petstore.swagger.io/api/pets/101'
       },
       response: {
         status: 204
@@ -127,7 +127,7 @@ describe('test generation', function () {
           'content-type': 'application/json'
         },
         method: "get",
-        uri: "http://petstore.swagger.io/pets/feed"
+        uri: "http://petstore.swagger.io/api/pets/feed"
       },
       response: {
         status: 200
