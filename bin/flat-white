@@ -21,29 +21,7 @@ function fail() {
 
 function main() {
   if (process.argv.length !== 4) return fail();
-  var swaggerFile = path.normalize(process.argv[3]);
-  describe('testing your swagger api using ' + swaggerFile, function () {
-    var spec = JSON.parse(fs.readFileSync(swaggerFile));
-    var tests = swaggestTest.parse(spec, process.env);
-
-    for (var route in tests) {
-      for (var method in tests[route]) {
-        var describeStr = 'Testing ' + method + ' ' + route;
-        describe(describeStr, function () {
-          tests[route][method].forEach(function (test) {
-            it(test.description, function () {
-              return preq(test.request)
-              .then(function (response) {
-                swaggestTest.assert(test.response, response);
-              }, function (response) {
-                swaggestTest.assert(test.response, response);
-              });
-            });
-          });
-        });
-      }
-    }
-  });
+  swaggestTest.runTests(process.argv[3], process.env);
 }
 
 main();
