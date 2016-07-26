@@ -33,6 +33,10 @@ The `x-test` section should look something like this:
           token: $TOKEN
       response:
         '200':
+          headers:
+            content-type: application/json
+          schema:
+            message: 'SUCCESS'
 ```
 
 Note that parameters are simply given a value, the type (body, query, path) is grabbed from the API specification, so you don't have to worry about specifying that. At the moment, swaggest-test only has the ability to check the response code of the response, but will very soon be able to build more complete checks for responses. The description is a description that you will be able to access when it comes time to run your test, so it's good to know what's going on.
@@ -40,6 +44,8 @@ Note that parameters are simply given a value, the type (body, query, path) is g
 Using `$ref` in parameters e.g. `- $ref: '#/parameters/test'` is allowed, as well as using `$ref` in the body schema, like `schema: $ref: '#/parameters/test'`.
 
 Also important to note that parameters that have a value starting with '$' are variables. You can pass these to swaggest-test and they will get filled in before the tests are generated.
+
+Last thing to discuss is the response. By default, we check types and required values as specified in your specification. Past that, you can define a "schema" which essentially functions as a checker for the JSON response. In our example, the JSON returned would have to have the parameter "message" set to "SUCCESS".
 
 Once your swagger file is setup, export it into .json and you can use it for the tool and the library!
 
@@ -54,65 +60,16 @@ TOKEN=himom
 This will fill in your `$TOKEN` variable with `himom`
 
 ## Library
-The library generates test objects that you can use to run mocha (or other, but we recommend sticking to mocha) tests from.
+The swaggest-test library generates and runs mocha-based tests for you, using a simple function.
 
-To start, import everything and let swaggest-test parse it:
 ```javascript
-var fs = require('fs');
-var swaggestTest = require('./lib/swaggest-test');
-var spec = JSON.parse(fs.readFileSync(__dirname + '/swagger.json'));
-var tests = swaggestTest.parse(spec, {TOKEN: 'himom'});
-```
-The big thing to note here is that when parsing, we have to also pass our "variables" object so that our "$" variables can be filled in. In this case, `$TOKEN` will be replaced by `'himom'`.
-
-The resulting 'tests' will be an Object with keys for each route. Each route then also has keys for each method. Inside each method is a list containing the tests. These tests can be run as follows:
-```javascript
-var preq = require('preq');
-it(test.description, function() {
-  return preq(test.request)
-    .then(function (response) {
-      swaggestTest.assert(test.response, response);
-    }, function (response) {
-      swaggestTest.assert(test.response, response);
-    });
-});
+var swaggestTest = require('swaggest-test');
+swaggestTest.runTests(__dirname + '/swagger.json', {TOKEN: 'himom'});
 ```
 
-We highly recommend that you use our assert function rather than writing your own. This ensures future changes to the response object are always updated in the assert function.
-
-All together, we recommend running something like this in a tests.json:
-```javascript
-var fs = require('fs')
-  , preq = require('preq');
-var swaggerTest = require('../lib/swaggest-test');
-
-describe('test api calls', function () {
-  var spec = JSON.parse(fs.readFileSync(__dirname + '/../swagger.json'));
-  var tests = swaggerTest.parse(spec, {TOKEN: 'himom'});
-
-  for (var route in tests) {
-    for (var method in tests[route]) {
-      var describeStr = 'Testing ' + method + ' ' + route;
-      describe(describeStr, function () {
-        tests[route][method].forEach(function (test) {
-          it(test.description, function () {
-            return request(test.request)
-              .then(function (response) {
-                swaggestTest.assert(test.response, response);
-              }, function (response) {
-                swaggestTest.assert(test.response, response);
-              });
-          });
-        });
-      });
-    }
-  }
-});
-```
-
-In fact, that's exactly how our command line tool `flat-white` does it. If you want to just run the tests and don't care about building them yourself, simply run `bin/flat-white swagger.json` and it'll do all of the work for you.
-
-WOOHOO! Automated tests generated using the swagger spec. Go you!
+If you put that in a file and run it with mocha, swaggest-test will parse your swagger file, and run the tests. For simplicity's sake, swaggest-test runs all tests asynchronously, so you don't have to worry about overlapping network requests.
 
 ## References
 This library was originally based off of [swagger-test](https://github.com/earldouglas/swagger-test), but has been changed almost entirely.
+
+Also huge thanks to [@saminakh](https://github.com/saminakh) and her work on the Motel swagger-test branch. She did some great work and inspired me to continue making improvements to this library!

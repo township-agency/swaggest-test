@@ -33,7 +33,16 @@ describe('test generation', function () {
          uri: 'http://petstore.swagger.io/api/pets'
        },
        response: {
-         status: 200
+         status: 200,
+         headers: {
+           'content-type': 'application/json'
+         },
+         spec: {
+           items: {
+             '$ref': '#/definitions/pet'
+           },
+           type: 'array'
+         }
        }
      });
   });
@@ -50,7 +59,16 @@ describe('test generation', function () {
         uri: 'http://petstore.swagger.io/api/pets'
       },
       response: {
-        status: 200
+        status: 200,
+        headers: {
+          'content-type': 'application/json'
+        },
+        spec: {
+          items: {
+            '$ref': '#/definitions/pet'
+          },
+          type: 'array'
+        }
       }
     });
   });
@@ -71,7 +89,29 @@ describe('test generation', function () {
         uri: 'http://petstore.swagger.io/api/pets'
       },
       response: {
-        status: 200
+        status: 200,
+        headers: {
+          'content-type': 'application/json'
+        },
+        schema: {
+          message: 'SUCCESS'
+        },
+        spec: {
+          properties: {
+            id: {
+              format: 'int64',
+              type: 'integer'
+            },
+            name: {
+              type: 'string'
+            },
+            tag: {
+              type: 'string'
+            }
+          },
+          required: ['id', 'name'],
+          type: 'object'
+        }
       }
     });
   });
@@ -90,7 +130,23 @@ describe('test generation', function () {
         uri: 'http://petstore.swagger.io/api/pets/101'
       },
       response: {
-        status: 200
+        status: 200,
+        spec: {
+          properties: {
+            id: {
+              format: 'int64',
+              type: 'integer'
+            },
+            name: {
+              type: 'string'
+            },
+            tag: {
+              type: 'string'
+            }
+          },
+          required: ['id', 'name'],
+          type: 'object'
+        }
       }
     });
   });
@@ -137,24 +193,201 @@ describe('test generation', function () {
 });
 
 describe('assertion functionality', function() {
-  it('simple status test', function() {
-    swaggestTest.assert({status: 200}, {status: 200});
+
+  var expected = {
+    status: 200,
+    headers: {
+      'content-type': 'application/json'
+    },
+    schema: {
+      'message': 'SUCCESS'
+    },
+    spec: {
+      type: 'object',
+      required: ['message'],
+      properties: {
+        message: {
+          type: 'string'
+        }
+      }
+    }
+  };
+
+  var actual = {
+    status: 200,
+    headers: {
+      'content-type': 'application/json'
+    },
+    data: {
+      message: 'SUCCESS'
+    }
+  }
+
+  describe('full response', function() {
+    swaggestTest.checkResponse(actual, expected);
+  });
+
+  describe('simple status', function() {
+    swaggestTest.checkResponse({status: 200}, {status: 200});
   });
 
   var headerReq = {
-    status: 200,
     headers: {
       'content-type': 'application/json'
     }
   };
 
-  it('full response test', function() {
-    swaggestTest.assert(headerReq, headerReq);
+  describe('header only', function() {
+    swaggestTest.checkResponse(headerReq, headerReq);
   });
 
-  delete headerReq.status;
+  var response = {
+    headers: {
+      'content-type': 'application/json',
+      'things': 'stuff'
+    }
+  };
 
-  it('header only test', function() {
-    swaggestTest.assert(headerReq, headerReq);
+  describe('response header with extra params', function() {
+    swaggestTest.checkResponse(response, headerReq);
+  });
+
+  var schemaReq = {
+    schema: {
+      'message': 'SUCCESS'
+    },
+    spec: {
+      properties: {
+        message: {
+          type: 'string'
+        }
+      }
+    }
+  };
+
+  response.data = {
+    'message': 'SUCCESS'
+  };
+
+  describe('schema only', function() {
+    swaggestTest.checkResponse(response, schemaReq);
+  });
+
+  response.data.cheese = 'doodles';
+  schemaReq.spec.properties.cheese = {type: 'string'}
+
+  describe('schema with extra params', function() {
+    swaggestTest.checkResponse(response, schemaReq);
+  });
+
+  schemaReq.schema.stuff = {
+    stuffinstuff: true
+  };
+  schemaReq.spec.properties.stuff = {type: 'object', properties: {}};
+  schemaReq.spec.properties.stuff.properties.stuffinstuff = {type: 'boolean'};
+  response.data.stuff = {
+    stuffinstuff: true
+  };
+
+  describe('nested schema', function() {
+    swaggestTest.checkResponse(response, schemaReq);
+  });
+
+  schemaReq.schema.stuff.inception = {
+    leo: {
+      is: {
+        inside: {
+          my: {
+            dreams: true
+          }
+        }
+      }
+    }
+  };
+  schemaReq.spec.properties.stuff.properties.inception = {
+    type: 'object',
+    properties: {
+      leo: {
+        type: 'object',
+        properties: {
+          is: {
+            type: 'object',
+            properties: {
+              inside: {
+                type: 'object',
+                properties: {
+                  my: {
+                    type: 'object',
+                    required: ['dreams'],
+                    properties: {
+                      dreams: {
+                        type: 'boolean'
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+  response.data.stuff.inception = {
+    leo: {
+      is: {
+        inside: {
+          my: {
+            dreams: true
+          }
+        }
+      }
+    }
+  };
+
+  describe('deeply nested schema', function() {
+    swaggestTest.checkResponse(response, schemaReq);
+  });
+
+  var typeReq = {
+    schema: {
+      a: 10,
+      b: 10.1,
+      c: 'blah',
+      d: true,
+      e: {
+        things: 'stuff'
+      },
+      f: ['stuff', 'things']
+    },
+    spec: {
+      type: 'object',
+      required: ['a', 'b', 'c', 'd', 'e', 'f'],
+      properties: {
+        a: {type: 'integer'},
+        b: {type: 'number'},
+        c: {type: 'string'},
+        d: {type: 'boolean'},
+        e: {type: 'object'},
+        f: {type: 'array'}
+      }
+    }
+  };
+
+  var typeResp = {
+    data: {
+      a: 10,
+      b: 10.1,
+      c: 'blah',
+      d: true,
+      e: {
+        things: 'stuff'
+      },
+      f: ['stuff', 'things']
+    },
+  };
+
+  describe('check all types', function() {
+    swaggestTest.checkResponse(typeReq, typeResp);
   });
 });
