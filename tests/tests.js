@@ -82,8 +82,10 @@ describe('Swaggest-test tests', function() {
           query: null,
           body: {
             name: 'garythesnail',
-            'breed.primary': 'lab',
-            'breed.secondary': 'poodle'
+            breed: {
+              primary: 'lab',
+              secondary: 'poodle'
+            }
           },
           headers: {
             'content-type': 'application/json'
