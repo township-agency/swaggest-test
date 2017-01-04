@@ -133,7 +133,9 @@
                         "description": "Add a new pet",
                         "request": {
                             "parameters": {
-                                "name": "garythesnail"
+                                "name": "garythesnail",
+                                "breed.primary": "lab",
+                                "breed.secondary": "poodle"
                             }
                         },
                         "response": {
@@ -305,6 +307,17 @@
             "properties": {
                 "name": {
                     "type": "string"
+                },
+                "breed": {
+                  "type": "object",
+                  "properties": {
+                    "primary": {
+                      "type": "string"
+                    },
+                    "secondary": {
+                      "type": "string"
+                    }
+                  }
                 }
             }
         },
