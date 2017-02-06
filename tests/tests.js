@@ -85,7 +85,8 @@ describe('Swaggest-test tests', function() {
             breed: {
               primary: 'lab',
               secondary: 'poodle'
-            }
+            },
+            colors: ['pink', 'red', 'blue']
           },
           headers: {
             'content-type': 'application/json'

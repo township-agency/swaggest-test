@@ -135,7 +135,8 @@
                             "parameters": {
                                 "name": "garythesnail",
                                 "breed.primary": "lab",
-                                "breed.secondary": "poodle"
+                                "breed.secondary": "poodle",
+                                "colors": ["pink", "red", "blue"]
                             }
                         },
                         "response": {
@@ -317,6 +318,12 @@
                     "secondary": {
                       "type": "string"
                     }
+                  }
+                },
+                "colors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
                   }
                 }
             }

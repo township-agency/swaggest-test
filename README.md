@@ -31,6 +31,10 @@ The `x-test` section should look something like this:
             - cats
           limit: 50
           token: $TOKEN
+          breed.primary: lab
+          colors:
+            - black
+            - yellow
       response:
         '200':
           headers:
@@ -44,6 +48,10 @@ Note that parameters are simply given a value, the type (body, query, path) is g
 Using `$ref` in parameters e.g. `- $ref: '#/parameters/test'` is allowed, as well as using `$ref` in the body schema, like `schema: $ref: '#/parameters/test'`.
 
 Also important to note that parameters that have a value starting with '$' are variables. You can pass these to swaggest-test and they will get filled in before the tests are generated.
+
+Objects have a special access, where they aren't setup as nested objects, they are setup in a similar way to Javascript objects, where you can set something in an object with the syntax above "object.key = value".
+
+Arrays are as expected, just simple YAML arrays.
 
 Last thing to discuss is the response. By default, we check types and required values as specified in your specification. Past that, you can define a "schema" which essentially functions as a checker for the JSON response. In our example, the JSON returned would have to have the parameter "message" set to "SUCCESS".
 
