@@ -1,5 +1,15 @@
 # swaggest-test
-Here at [Motel](http://motel.is) we are starting to use Swagger more to properly build out and document our APIs. Once we found [swagger-test](https://github.com/earldouglas/swagger-test), we fell in love. However, our intense lust soon died out to the reality of a very small library with no updates and very little support. We tried to make our own [improvements](https://github.com/MotelIs/swagger-test), but the API/parsing of swagger-test didn't cut it. For this reason, we decided that if it was going to be done right, we had to do it ourselves.
+Swaggest test is a Swagger API specification based testing protocol. It utilizes Swagger JSON files to build a series of requests and check responses to those requests. Adding additional tests is as easy as adding additional documentation, making it simple to build and deploy unit tests without separating the docs.
+
+Here at [Motel](http://motel.is) we started to use Swagger more to build out and document our APIs. Once we found [swagger-test](https://github.com/earldouglas/swagger-test), we loved it, we just needed to cover a few bases. 
+
+We've created this module to create a more complete set of features that better fit our use cases. Features we include in addition to swagger-test:
+- Testing for Nested Objects
+- Testing for Arrays
+- Data Type Verification
+- Return Object Verification
+
+This allows us to test the actual values and data that are being returned, instead of just testing status codes.
 
 ## Setup
 `npm install swaggest-test`
